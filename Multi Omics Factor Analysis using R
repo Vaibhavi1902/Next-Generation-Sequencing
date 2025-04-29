@@ -1,0 +1,19 @@
+# Load required libraries
+library(MOFA2)
+library(ggplot2)
+library(dplyr)
+data <- read.csv("C:/Users/omkar/Documents/IPSC.csv", header = TRUE)
+data$Pathway.Id <- as.factor(data$Pathway.Id)
+# Log-transform p-values (optional for visualization)
+data$log_pValue <- -log10(data$pValue)
+data$log_FDR <- -log10(data$FDR)
+# Plot p-values vs. gene number
+ggplot(data, aes(x = Gene.Number, y = log_pValue)) +
+ggplot(data, aes(x = Gene.Number, y = log_pValue)) +
+geom_point(color = "blue") +
+labs(title = "p-Value Distribution", x = "Gene Number", y = "-log10(pValue)") +
+theme_minimal()
+
+# Prepare MOFA input data
+mofa_data <- list(Gene_Num = data$Gene.Number, pValue = data$pValue, FDR = data$FDR)
+MOFAobject <- create_mofa(mofa_data)
