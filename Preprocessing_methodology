@@ -1,0 +1,29 @@
+1.	Quality Filtering with FastQC
+>unzip fastqc_v0.12.1.zip
+>sudo apt-get install -y putty
+>cd FastQC/
+>chmod 755 fastqc
+ >./fastqc
+
+2.	Subsampling Reads- 
+> seqtk sample -s100 /Downloads/somatic_hematopoietic_stemcells.fastq 0.1 > Home/Documents/subsampled/somatic_subsampled.fastq
+
+3.	Trimming Low-Quality Bases from Ends- Seqtk can trim low-quality bases from the ends of reads, which is particularly useful when reads tend to have lower quality near the ends.
+>java -jar /usr/share/java/trimmomatic-0.39.jar SE -phred33 /home/bioinformatics/Documents/NGS_samples/cancer.fastq /home/bioinformatics/Documents/trimmed_samples/cancer_trimmed.fastq
+ILLUMINACLIP:/home/bioinformatics/Linux_tutorial/trimmomatic-main/adapters/TruSeq3-SE.fa:2:30:10
+
+
+4.	Indexing the Reference Genome and Aligning Reads to a Reference Genome
+> bowtie2-build Homosapiens.GRCh38.fa reference_genome_index
+>bwa mem -t 4 -k 10 -w 120 -A 4 -B 2 /home/bioinformatics/Downloads/hGRC38.fasta /home/bioinformatics/Downloads/hES_subsampled.fastq >/home/bioinformatics/Documents/hES_aligned.sam
+
+
+5.	Converting aligned SAM files to BAM files
+> samtools view  /home /bioinformatics /Documents /aligned_sam_files /iPSC_aligned.sam > /home/bioinformatics/Documents/sam_to_bam/iPSC2.bam
+
+6.	Sorting and Indexing BAM files
+>samtools sort /home/bioinformatics/Documents/hES_aligned.bam -o /home/bioinformatics/Documents/hES_sam_sorted.bam
+>samtools index /home/bioinformatics/Documents/hES_sam_sorted.bam
+
+ 7. Identification of Variant genes using Interaction databases and studying their Functional Interaction : 
+The variant genes were fed into the Pharsos database to study  Co-expression data, shared biological pathways and shared drug targets or diseases.
